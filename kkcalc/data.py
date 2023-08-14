@@ -419,10 +419,10 @@ def merge_spectra(NearEdge_Data, ASF_E, ASF_Data, merge_points=None, add_backgro
 			logger.error("Not implemented!")
 			#get pre-edge region
 			#extrapolate background
-			scale = (asf_merge_values[1]-asf_merge_values[0])/(NearEdge_merge_values[1]-NearEdge_merge_values[0])
+			scale = abs((asf_merge_values[1] - asf_merge_values[0]) / (NearEdge_merge_values[1] - NearEdge_merge_values[0]))
 			scaled_NearEdge_Data = numpy.vstack((NearEdge_Data[:,0],((NearEdge_Data[:, 1]-NearEdge_merge_values[0])*scale)+asf_merge_values[0])).T
 		else:# don't add background
-			scale = (asf_merge_values[1]-asf_merge_values[0])/(NearEdge_merge_values[1]-NearEdge_merge_values[0])
+			scale = abs((asf_merge_values[1] - asf_merge_values[0]) / (NearEdge_merge_values[1] - NearEdge_merge_values[0]))
 			scaled_NearEdge_Data = numpy.vstack((NearEdge_Data[:,0],((NearEdge_Data[:, 1]-NearEdge_merge_values[0])*scale)+asf_merge_values[0])).T
 		try:
 			import scipy.optimize
@@ -468,7 +468,7 @@ def merge_spectra(NearEdge_Data, ASF_E, ASF_Data, merge_points=None, add_backgro
 		Full_Coeffs = numpy.vstack((ASF_Data[0:asf_merge_ind[0]+1,:],NearEdge_Coeffs,ASF_Data[asf_merge_ind[1]+1:,:]))
 		splice_points = [asf_merge_ind[0]+1, asf_merge_ind[0]+len(scaled_NearEdge_Data[:,0])]
 	if plotting_extras:
-		return Full_E, Full_Coeffs, plot_scaled_NearEdge_Data, splice_points
+		return Full_E, Full_Coeffs, plot_scaled_NearEdge_Data, splice_points, scale
 	else:
 		return Full_E, Full_Coeffs
 	
